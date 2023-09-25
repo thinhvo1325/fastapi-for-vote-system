@@ -19,7 +19,8 @@ docker compose up
 Nếu thành công thì WebAPI sẽ được chạy trên:
 
 - API server: http://localhost:8000/docs
-
+  
+Trong MySQL Server đã có sẵn dữ liệu cho các bảng dùng cho việc test các API
 ## Mô tả database
 ![database](./image/database.png)
 
