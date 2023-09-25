@@ -5,9 +5,11 @@ from ..schemas.result_select import CreateResultSelect, UpdateResultSelect
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
+#Lấy dữ liệu các user bình chọn cho option đó với option_id truyền vào
 def get_user_select_option(db: Session, option_id: int):
     return db.query(ResultSelect).filter(ResultSelect.option_id == option_id).all()
 
+#Tạo 1 dòng trong bảng result_select
 def create_result_select(db: Session, request: CreateResultSelect):
     new_result_select = ResultSelect(
         user_id = request.user_id,
@@ -17,8 +19,6 @@ def create_result_select(db: Session, request: CreateResultSelect):
     db.commit()
     db.refresh(new_result_select) 
     return new_result_select
-
-#-----CRUD cho vote với kiểu bầu chọn 1 trong nhiều-----
 
 #update lại bình chọn của user
 def update_result_user(db: Session, option_id: int, user_id: int, request: UpdateResultSelect):

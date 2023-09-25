@@ -12,12 +12,15 @@ from sqlalchemy import func
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
+#Lấy thông tin tất cả cuộc bình chọn
 def get_all_votes(db: Session):
     return db.query(Vote).all()
 
+#Lấy thông tin cuộc bình chọn với vote_id
 def get_vote_by_id(db: Session, id: int):
     return db.query(Vote).filter(Vote.vote_id == id).first()
 
+#Update trạng thái cuộc bình chọn
 def update_status_vote(db: Session, id: int, request: UpdateStatusVote):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -35,7 +38,8 @@ def update_status_vote(db: Session, id: int, request: UpdateStatusVote):
                 content = {"detail": f"Vote id {id} update status failed"},
                 status_code = 400
             )
-        
+
+#Update nội dung cuộc bình chọn        
 def update_context_vote(db: Session, id: int, request: UpdaeContextVote):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -53,7 +57,8 @@ def update_context_vote(db: Session, id: int, request: UpdaeContextVote):
                 content = {"detail": f"Vote id {id} update status failed"},
                 status_code = 400
             )
-        
+
+#Tạo cuộc bình chọn       
 def create_vote(db: Session, request: CreateVote):
     new_vote = Vote(
         name = request.name,
@@ -69,6 +74,7 @@ def create_vote(db: Session, request: CreateVote):
     db.refresh(new_vote)
     return new_vote
 
+#Lấy kết quả cuộc bình chọn kiểu one_select và many_select
 def get_result_select(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -83,7 +89,7 @@ def get_result_select(db: Session, id: int):
         
         return option_ids, statistic
     
-
+#Lấy kết quả cuộc bình chọn kiểu one_boolean 
 def get_result_one_boolean(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -94,6 +100,7 @@ def get_result_one_boolean(db: Session, id: int):
                     .group_by(ResultOneBoolean.answer).all()
         return statistic
     
+#Lấy kết quả cuộc bình chọn kiểu many_boolean  
 def get_result_many_boolean(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -109,7 +116,7 @@ def get_result_many_boolean(db: Session, id: int):
             result.append([option_id, query])
         return result
     
-
+#Lấy thông tin user trả lời cho kiểu bình chọn one_select và many_select
 def get_user_vote_select(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -124,7 +131,7 @@ def get_user_vote_select(db: Session, id: int):
             list_user.append([option_id, statistic])
         return list_user
     
-    
+#Lấy thông tin user trả lời cho kiểu bình chọn one_boolean   
 def get_user_one_boolean(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:
@@ -134,7 +141,7 @@ def get_user_one_boolean(db: Session, id: int):
                         .filter(ResultOneBoolean.vote_id == id).all()
         return statistic
     
-
+#Lấy thông tin user trả lời cho kiểu bình chọn many_boolean
 def get_user_many_boolean(db: Session, id: int):
     vote = db.query(Vote).filter(Vote.vote_id == id)
     if vote.first() == None:

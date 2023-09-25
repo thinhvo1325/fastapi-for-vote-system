@@ -3,9 +3,11 @@ from sqlalchemy.orm import Session
 from ..models.option import Option
 from ..schemas.option import CreateOption
 
+#Lấy option với vote_id truyền vào
 def get_option_by_vote_id(db: Session, vote_id: int):
     return db.query(Option).filter(Option.vote_id == vote_id).all()
 
+#Tạo option
 def create_option(db: Session, request: CreateOption):
     new_option = Option(
         vote_id = request.vote_id,

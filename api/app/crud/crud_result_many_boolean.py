@@ -5,9 +5,11 @@ from ..schemas.result_many_boolean import CreateResultManyBoolean, UpdateResultM
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
+#Lấy dữ liệu các user trả lời cho option đó với option_id truyền vào
 def get_user_answer(db: Session, option_id: int):
     return db.query(ResultManyBoolean).filter(ResultManyBoolean.option_id == option_id).all()
 
+#Tạo 1 dòng trong bảng result_many_boolean
 def create_result_many_boolean(db: Session, request: CreateResultManyBoolean):
     new_result_many_boolean = ResultManyBoolean(
         user_id = request.user_id,
@@ -19,8 +21,7 @@ def create_result_many_boolean(db: Session, request: CreateResultManyBoolean):
     db.refresh(new_result_many_boolean) 
     return new_result_many_boolean
 
-
-#update lại bình chọn của user
+#update lại câu trả lời của user
 def update_result_many_boolean(db: Session, option_id: int, user_id: int, request: UpdateResultManyBoolean):
     result = db.query(ResultManyBoolean).filter(ResultManyBoolean.option_id == option_id,
                                          ResultManyBoolean.user_id == user_id)

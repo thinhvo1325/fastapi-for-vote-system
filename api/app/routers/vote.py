@@ -9,10 +9,11 @@ from ..schemas.vote import UpdaeContextVote, UpdateStatusVote, CreateVote
 
 router = APIRouter(
     prefix="/vote",
-    tags=["votes"],
+    tags=["Vote"],
     responses={404: {"description": "Not found"}}
 )
 
+#Lấy thông tin tất cả cuộc bình chọn
 @router.get("/")
 def get_all_vote(db: Session = Depends(get_db)):
     votes = crud_vote.get_all_votes(db)
@@ -20,7 +21,8 @@ def get_all_vote(db: Session = Depends(get_db)):
         return {"data": votes}
     else:
         raise HTTPException(status_code=404, detail="User not found")
-    
+
+#Lấy thông tin cuộc bình chọn với vote_id
 @router.get("/{id}")
 def get_vote_by_id(id: int, db: Session = Depends(get_db)):
     vote = crud_vote.get_vote_by_id(db,id)
@@ -28,22 +30,26 @@ def get_vote_by_id(id: int, db: Session = Depends(get_db)):
         return {"data": vote}
     else:
         raise HTTPException(status_code=404, detail=f"Vote with id {id} not found")
-    
+
+#Update trạng thái cuộc bình chọn  
 @router.put("/update_status")
 def update_status_vote(id: int, request: UpdateStatusVote, db: Session = Depends(get_db)):
     return crud_vote.update_status_vote(db, id, request)
 
+#Update nội dung cuộc bình chọn 
 @router.put("/update_context")
 def update_context_vote(id: int, request: UpdaeContextVote, db: Session = Depends(get_db)):
     return crud_vote.update_context_vote(db, id, request)
 
+#Tạo cuộc bình chọn   
 @router.post("/")
 def create_vote(request: CreateVote, db: Session = Depends(get_db)):
     return crud_vote.create_vote(db, request)
 
+#Lấy kết quả cuộc bình chọn kiểu 
 @router.get("/result/{id}")
-def get_result(id: int, type:str, db: Session = Depends(get_db)):
-    if type in ["one_select", "many_select"]:
+def get_result(id: int, type: str, db: Session = Depends(get_db)):
+    if type in ["one_select", "many_select"]:           #Logic xử lý nếu kiểu bình chọn là one_select và many_select
         option_ids, result = crud_vote.get_result_select(db,id)
         total_voted = 0
         result_list = []
@@ -56,7 +62,7 @@ def get_result(id: int, type:str, db: Session = Depends(get_db)):
             result_list.append({"option_id": option_id, "total_user": 0})
         return {"total_voted": total_voted, "data": result_list}
     
-    elif type == "one_boolean":
+    elif type == "one_boolean":                         #Logic xử lý nếu kiểu bình chọn là one_boolean
         result = crud_vote.get_result_one_boolean(db, id)
         total_voted = 0
         result_dict = {}
@@ -65,7 +71,7 @@ def get_result(id: int, type:str, db: Session = Depends(get_db)):
             total_voted+=total_user
         return {"total_voted": total_voted, "data": result_dict}
     
-    elif type =="many_boolean":
+    elif type =="many_boolean":                         #Logic xử lý nếu kiểu bình chọn là many_boolean
         result = crud_vote.get_result_many_boolean(db, id)
         total_voted = 0
         result_list = []
@@ -80,10 +86,11 @@ def get_result(id: int, type:str, db: Session = Depends(get_db)):
     
     else:
         raise HTTPException(status_code=404, detail=f"Vote don't have type {type}")
-    
+
+#Lấy thông tin user tham gia vào cuộc bình chọn 
 @router.get("/user_vote/{id}")
 def get_user_vote(id: int, type:str, db: Session = Depends(get_db)):
-    if type in ["one_select", "many_select"]:
+    if type in ["one_select", "many_select"]:             #Logic xử lý nếu kiểu bình chọn là one_select và many_select
         result = crud_vote.get_user_vote_select(db, id)
         data = []
         for option_id, users in result:
@@ -96,7 +103,7 @@ def get_user_vote(id: int, type:str, db: Session = Depends(get_db)):
             data.append({"option_id": option_id, "user": user_list})
         return {"data": data}
     
-    elif type == "one_boolean":
+    elif type == "one_boolean":                          #Logic xử lý nếu kiểu bình chọn là one_boolean
         result = crud_vote.get_user_one_boolean(db, id)
         data = []
         user_true_list = []
@@ -116,7 +123,7 @@ def get_user_vote(id: int, type:str, db: Session = Depends(get_db)):
         data.append({"answer": "false", "user": user_false_list})
         return {"data": data}
     
-    elif type=="many_boolean":
+    elif type=="many_boolean":                          #Logic xử lý nếu kiểu bình chọn là many_boolean
         result = crud_vote.get_user_many_boolean(db, id)
         data = []
         for option_id, users in result:

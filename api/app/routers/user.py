@@ -9,10 +9,11 @@ from ..schemas.user import CreateUser
 
 router = APIRouter(
     prefix="/user",
-    tags=["users"],
+    tags=["User"],
     responses={404: {"description": "Not found"}}
 )
 
+#Lấy thông tin tất cả user
 @router.get("/")
 def get_all_user(db: Session = Depends(get_db)):
     users = crud_user.get_all_users(db)
@@ -21,6 +22,7 @@ def get_all_user(db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=404, detail="User not found")
 
+#Lấy thông tin user với user_id
 @router.get("/{id}")
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
     user = crud_user.get_user_by_id(db,id)
@@ -28,7 +30,8 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
         return {"data": user}
     else:
         raise HTTPException(status_code=404, detail=f"User with id {id} not found")
-    
+
+#Tạo một user
 @router.post("/")
 def create_user(request: CreateUser, db: Session = Depends(get_db)):
     db_user = crud_user.get_user_by_email(db, request.email)
