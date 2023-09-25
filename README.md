@@ -18,7 +18,7 @@ docker compose up
 
 Nếu thành công thì WebAPI sẽ được chạy trên:
 
-- API server: http://localhost:8000
+- API server: http://localhost:8000/docs
 
 ## Mô tả database
 ![database](./image/database.png)
