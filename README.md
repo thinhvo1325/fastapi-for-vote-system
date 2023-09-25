@@ -1,5 +1,5 @@
 # Backend với WebAPI cho Hệ thống bầu chọn
-Công nghệ sử dụng: 
+Những điểm nội bật của hệ thống
 - FastAPI trong Python 
 - MySQL
 - Docker
