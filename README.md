@@ -10,7 +10,7 @@ Những điểm nổi bật của hệ thống
 
 
 
-Sau khi cài đặt thì clone repository và chạy 2 câu lệnh phía dưới trên CMD để build ứng dụng
+Sau khi cài đặt thì clone repository, đi vào thư mục `fastapi-for-vote-system` và chạy 2 câu lệnh phía dưới trên cmd để build ứng dụng
 ```bash
 docker-compose build
 docker-compose up 
