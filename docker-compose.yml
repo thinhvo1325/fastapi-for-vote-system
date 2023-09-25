@@ -1,0 +1,34 @@
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    platform: linux/x86_64
+    build: ./mysql/
+    environment:
+      - MYSQL_USER=user
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DATABASE=vote_system    
+    ports:
+      - "3310:3310"
+    volumes:
+      - ./mysql/db:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
+    tty: true
+  api:
+    depends_on:
+      - mysql
+    container_name: fast_api
+    platform: linux/x86_64
+    build: ./api
+    environment:
+      - DATABASE_HOST=mysql
+      - DATABASE_SOCKET=3310    
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./api:/app
+    ports:
+      - 8000:8000
+    
