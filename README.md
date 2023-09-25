@@ -21,6 +21,20 @@ Nếu thành công thì WebAPI sẽ được chạy trên:
 - API server: http://localhost:8000/docs
   
 Trong MySQL Server đã có sẵn dữ liệu cho các bảng dùng cho việc test các API
+
+## Cấu trúc dự án
+Dự án sẽ bao gồm 2 folder chính là `mysql` và  `api`
+  + `mysql`: chứa các cấu hình về mysql server
+  + `api`: chứa source code của dự án
+
+Trong folder `api` có các folder như:
+  + `credentials`: Chứa file `.env` có Connection String để kết nối tới MySQL Server
+  + `database`: Kết nối tới MySQL Server
+  + `models`: Có các model của các bảng trong database
+  + `schemas`: Có các schemas của các đối tượng
+  + `crud`: Là các controller để thực hiện việc CRUD
+  + `routers`: Chứa các router của API
+
 ## Mô tả database
 ![database](./image/database.png)
 
@@ -53,15 +67,3 @@ Các api cho `result_select`, `result_one_boolean`, `result_many_boolean` bao g�
 
 ![database](./image/result_one_boolean.png)
 
-## Cấu trúc dự án
-Dự án sẽ bao gồm 2 folder chính là `mysql` và  `api`
-  + `mysql`: chứa các cấu hình về mysql server
-  + `api`: chứa source code của dự án
-
-Trong folder `api` có các folder như:
-  + `credentials`: Chứa file `.env` có Connection String để kết nối tới MySQL Server
-  + `database`: Kết nối tới MySQL Server
-  + `models`: Có các model của các bảng trong database
-  + `schemas`: Có các schemas của các đối tượng
-  + `crud`: Là các controller để thực hiện việc CRUD
-  + `routers`: Chứa các router của API
