@@ -16,10 +16,9 @@ docker-compose build
 docker-compose up 
 ```
 
-Nếu Docker được chạy thành công thi WebAPI và MySQL Server sẽ được chạy trên:
+Nếu thành công thì WebAPI sẽ được chạy trên:
 
 - API server: http://localhost:8000
-- DB server: http://localhost:3110
 
 ## Mô tả database
 ![database](./image/database.png)
